@@ -13,6 +13,7 @@
     "lerna": "^3.6.0",
     "lerna-changelog": "^0.8.2",
     "serve-handler": "^6.0.1",
+    "puppeteer": "^1.17.0",
     "test-build-result": "^1.1.2",
     "umi-tools": "^0.4.0",
     "umi-test": "^1.5.12"
