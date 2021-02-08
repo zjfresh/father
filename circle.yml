@@ -24,7 +24,9 @@ jobs:
       - checkout
       - restore_cache:
           key: node-modules-{{ checksum "package.json" }}
-      - run: yarn
+      - run:
+          command: yarn
+          no_output_timeout: 30m
       - run: yarn bootstrap --npm-client yarn
       - run: yarn build
       - run:
