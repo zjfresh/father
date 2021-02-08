@@ -23,15 +23,16 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: node-modules-{{ checksum "package.json" }}
-      - run: npm i --registry=https://registry.npm.taobao.org
-      - run: npm run bootstrap
-      - run: npm run build
+          key: yarn-packages-{{ checksum "yarn.lock" }}
+      - run: curl -o- -L https://yarnpkg.com/install.sh | bash
+      - run: yarn install --immutable
+      - run: yarn bootstrap
+      - run: yarn build
       - run:
-          command: npm test --forceExit --detectOpenHandles --runInBand --maxWorkers=2
+          command: yarn test --forceExit --detectOpenHandles --runInBand --maxWorkers=2
           no_output_timeout: 300m
       - run: bash <(curl -s https://codecov.io/bash)
       - save_cache:
-          key: node-modules-{{ checksum "package.json" }}
+          key: yarn-packages-{{ checksum "yarn.lock" }}
           paths:
-            - ./node_modules
+            - ~/.cache/yarn
