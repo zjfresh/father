@@ -24,7 +24,7 @@ jobs:
       - checkout
       - restore_cache:
           key: node-modules-{{ checksum "package.json" }}
-      - run: npm i
+      - run: npm i --registry=https://registry.npm.taobao.org
       - run: npm run bootstrap
       - run: npm run build
       - run:
