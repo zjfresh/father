@@ -11,7 +11,7 @@ jobs:
     environment:
       CI: true
       NODE_ENV: test
-      NODE_OPTIONS: --max_old_space_size=4096
+      NODE_OPTIONS: --max_old_space_size=8192
       NPM_CONFIG_LOGLEVEL: error
       JOBS: max # https://gist.github.com/ralphtheninja/f7c45bdee00784b41fed
     branches:
@@ -23,15 +23,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: npm-packages-{{ checksum "package.json" }}
-      - run: npm install
-      - run: npm run bootstrap
-      - run: npm run build
+          key: yarn-packages-{{ checksum "yarn.lock" }}
+      - run: yarn
+      - run: yarn bootstrap
+      - run: yarn build
       - run:
-          command: npm test --forceExit --detectOpenHandles --runInBand --maxWorkers=2
+          command: yarn test --forceExit --detectOpenHandles --runInBand --maxWorkers=2
           no_output_timeout: 300m
       - run: bash <(curl -s https://codecov.io/bash)
       - save_cache:
-          key: npm-packages-{{ checksum "package.json" }}
+          key: yarn-packages-{{ checksum "yarn.lock" }}
           paths:
-            - ~/.cache/npm
+            - ~/.cache/yarn
