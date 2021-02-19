@@ -23,16 +23,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: yarn-packages-{{ checksum "yarn.lock" }}
-      - run: curl -o- -L https://yarnpkg.com/install.sh | bash
-      - run: yarn install --immutable
-      - run: yarn bootstrap
-      - run: yarn build
+          key: npm-packages-{{ checksum "package.json" }}
+      - run: npm install
+      - run: npm run bootstrap
+      - run: npm run build
       - run:
-          command: yarn test --forceExit --detectOpenHandles --runInBand --maxWorkers=2
+          command: npm test --forceExit --detectOpenHandles --runInBand --maxWorkers=2
           no_output_timeout: 300m
       - run: bash <(curl -s https://codecov.io/bash)
       - save_cache:
-          key: yarn-packages-{{ checksum "yarn.lock" }}
+          key: npm-packages-{{ checksum "package.json" }}
           paths:
-            - ~/.cache/yarn
+            - ~/.cache/npm
