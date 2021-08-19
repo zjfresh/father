@@ -23,9 +23,18 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: node-modules-{{ checksum "package.json" }}
-      - run: npm install
-      - run: npm run bootstrap
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
+      - run:
+          name: Install Dependencies
+          command: yarn install --immutable
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-{{ checksum "yarn.lock" }}
+          paths:
+            - .yarn/cache
+            - .yarn/unplugged
       - run: npm run build
       - run:
           command: npm test
